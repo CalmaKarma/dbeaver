@@ -16,6 +16,8 @@
  */
 package org.jkiss.utils;
 
+import org.jkiss.code.NotNull;
+
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
 import java.text.NumberFormat;
@@ -31,13 +33,21 @@ public class ByteNumberFormat extends NumberFormat {
 
     private static final DecimalFormat fpFormat = new DecimalFormat("#.#");
 
-    private boolean useLongUnitNames = false;
+    /**
+     * Determines whether this formatter should use long names for units.
+     * Note that this formatter uses ISO 80000 compliant names.
+     */
+    private final UnitNames unitNames;
 
     /**
      * Creates a new formatter.
      */
     public ByteNumberFormat() {
-        super();
+        unitNames = UnitNames.SHORT;
+    }
+
+    public ByteNumberFormat(@NotNull UnitNames unitNames) {
+        this.unitNames = unitNames;
     }
 
     public static int computeIndex(double bytes) {
@@ -90,7 +100,7 @@ public class ByteNumberFormat extends NumberFormat {
             str = fpFormat.format(intBytes);
         }
         final Unit unit = UNITS[index];
-        return str + (useLongUnitNames ? unit.fullName : unit.shortName);
+        return str + (unitNames == UnitNames.FULL ? unit.fullName : unit.shortName);
     }
 
     /**
@@ -137,16 +147,6 @@ public class ByteNumberFormat extends NumberFormat {
         return null;
     }
 
-    /**
-     * Sets whether this formatter should use long names for units.
-     * Note that this formatter uses ISO 80000 compliant names
-     *
-     * @param useLongUnitNames <code>true</code> if formatter should use long names for units, <code>false</code> otherwise
-     */
-    public void setUseLongUnitNames(boolean useLongUnitNames) {
-        this.useLongUnitNames = useLongUnitNames;
-    }
-
     private enum Unit {
         BYTE("B", "B"),
         KILOBYTE("K", "KiB"),
@@ -162,5 +162,10 @@ public class ByteNumberFormat extends NumberFormat {
             this.shortName = shortName;
             this.fullName = fullName;
         }
+    }
+
+    public enum UnitNames {
+        SHORT,
+        FULL,
     }
 }

@@ -146,9 +146,9 @@ public class DiagramPart extends PropertyAwarePart {
         router.setSeparation(15);
         //router.setNextRouter(new BendpointConnectionRouter());
         router.setNextRouter(new MikamiTabuchiConnectionRouter(figure));
-        router.setNextRouter(new ManhattanConnectionRouter());
+//        router.setNextRouter(new ManhattanConnectionRouter());
         //router.setNextRouter(new BendpointConnectionRouter());
-        cLayer.setConnectionRouter(new ShortestPathConnectionRouter(figure));
+        cLayer.setConnectionRouter(new MikamiTabuchiConnectionRouter(figure));
 
         return figure;
     }
